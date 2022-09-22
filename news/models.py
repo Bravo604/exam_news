@@ -66,7 +66,7 @@ class NewsStatus(models.Model):
 
 class CommentStatus(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
 
     class Meta:

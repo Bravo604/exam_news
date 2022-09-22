@@ -107,7 +107,7 @@ class NewsStatusView(APIView):
 
 class CommentStatusView(APIView):
     def get(self, request, news_id, comment_id, status_slug):
-        comments = get_object_or_404(Comment, id=comment_id, news=get_object_or_404(News, id=self.kwargs['news_id']))
+        comments = get_object_or_404(Comment, id=comment_id)
         comment_status = get_object_or_404(Status, slug=status_slug)
         try:
             statuses = CommentStatus.objects.create(comment=comments, author=request.user.author, status=comment_status)
