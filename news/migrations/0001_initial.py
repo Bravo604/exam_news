@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('slug', models.CharField(max_length=20, unique=True)),
-                ('status_name', models.CharField(max_length=20)),
+                ('name', models.CharField(max_length=20)),
             ],
         ),
         migrations.CreateModel(

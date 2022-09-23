@@ -1,6 +1,7 @@
 from django.db import IntegrityError
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -82,6 +83,9 @@ class StatusUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class NewsStatusView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated, ]
+
     def get(self, request, news_id, status_slug):
         news = get_object_or_404(News, id=news_id)
         news_status = get_object_or_404(Status, slug=status_slug)
@@ -106,6 +110,9 @@ class NewsStatusView(APIView):
 
 
 class CommentStatusView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated, ]
+
     def get(self, request, news_id, comment_id, status_slug):
         comments = get_object_or_404(Comment, id=comment_id)
         comment_status = get_object_or_404(Status, slug=status_slug)
@@ -127,4 +134,3 @@ class CommentStatusView(APIView):
                 'message': f'comment {comment_id} got status from {request.user.author}'
             }
             return Response(data, status=status.HTTP_201_CREATED)
-
