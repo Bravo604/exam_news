@@ -17,10 +17,12 @@ class News(models.Model):
 
     def get_status(self):
         statuses = NewsStatus.objects.filter(news=self) \
-            .values('status__status_name').annotate(count=Count('status'))
+            .values('status__name').annotate(count=Count('status'))
         result = {}
         for i in statuses:
-            result[i['status__status_name']] = i['count']
+            result[i['status__name']] = i['count']
+
+        return result
 
     @property
     def news_username(self):
@@ -36,20 +38,20 @@ class Comment(models.Model):
 
     def get_status(self):
         statuses = CommentStatus.objects.filter(comment=self) \
-            .values('status__status_name').annotate(count=Count('status'))
+            .values('status__name').annotate(count=Count('status'))
         result = {}
         for i in statuses:
-            result[i['status__status_name']] = i['count']
+            result[i['status__name']] = i['count']
 
         return result
 
 
 class Status(models.Model):
     slug = models.CharField(max_length=20, unique=True)
-    status_name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.status_name
+        return self.name
 
 
 class NewsStatus(models.Model):
@@ -61,7 +63,7 @@ class NewsStatus(models.Model):
         unique_together = ('author', 'news')
 
     def __str__(self):
-        return f'{self.news} - {self.author.user.username} - {self.status.status_name}'
+        return f'{self.news} - {self.author.user.username} - {self.status.name}'
 
 
 class CommentStatus(models.Model):
@@ -73,4 +75,4 @@ class CommentStatus(models.Model):
         unique_together = ('author', 'comment')
 
     def __str__(self):
-        return f' {self.comment} - {self.user.author} - {self.status.status_name}'
+        return f' {self.comment} - {self.user.author} - {self.status.name}'
